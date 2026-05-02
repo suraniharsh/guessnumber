@@ -4,8 +4,8 @@ let socket: Socket | null = null;
 
 export function getSocket(): Socket {
   if (!socket) {
-    socket = io({
-      path: "/api/socket",
+    const socketUrl = process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:3001";
+    socket = io(socketUrl, {
       transports: ["websocket", "polling"],
       reconnection: true,
       reconnectionDelay: 1000,
