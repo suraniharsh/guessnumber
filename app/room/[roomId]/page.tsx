@@ -212,25 +212,25 @@ export default function RoomPage({ params }: { params: Promise<{ roomId: string 
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#0a0a0f] px-4">
         <div className="max-w-sm w-full text-center">
-          <h1 className="text-3xl font-bold text-white mb-2">Room Created</h1>
-          <p className="text-gray-500 mb-8">Share this code with your opponent</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2">Room Created</h1>
+          <p className="text-gray-500 mb-8 text-sm sm:text-base">Share this code with your opponent</p>
 
-          <div className="bg-[#12121a] border border-[#1e1e2e] rounded-2xl p-8 mb-6">
+          <div className="bg-[#12121a] border border-[#1e1e2e] rounded-2xl p-6 sm:p-8 mb-6">
             <p className="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-3">
               Room Code
             </p>
-            <p className="text-5xl font-mono font-bold text-violet-400 tracking-[0.3em] mb-6">
+            <p className="text-4xl sm:text-5xl font-mono font-bold text-violet-400 tracking-[0.3em] mb-6 break-all">
               {displayRoomId}
             </p>
             <button
               onClick={handleCopyRoomId}
-              className="w-full py-3 bg-violet-600 hover:bg-violet-500 text-white rounded-xl font-semibold transition-colors"
+              className="w-full py-3 bg-violet-600 hover:bg-violet-500 text-white rounded-xl font-semibold transition-colors text-sm sm:text-base"
             >
               {copied ? "Copied!" : "Copy Code"}
             </button>
           </div>
 
-          <div className="flex items-center justify-center gap-2 text-gray-600 text-sm">
+          <div className="flex items-center justify-center gap-2 text-gray-600 text-xs sm:text-sm">
             <div className="w-2 h-2 bg-violet-500 rounded-full animate-pulse" />
             Waiting for Player 2 to join...
           </div>
@@ -242,19 +242,19 @@ export default function RoomPage({ params }: { params: Promise<{ roomId: string 
   // ─── Pick Number ───────────────────────────────────────────────────────────
   if (phase === "pick-number") {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#0a0a0f] px-4">
+      <div className="min-h-screen flex items-center justify-center bg-[#0a0a0f] px-4 py-8">
         <div className="max-w-sm w-full">
           <div className="text-center mb-8">
-            <span className="text-xs font-semibold text-violet-400 uppercase tracking-widest bg-violet-500/10 px-3 py-1 rounded-full">
+            <span className="text-xs font-semibold text-violet-400 uppercase tracking-widest bg-violet-500/10 px-3 py-1 rounded-full inline-block">
               Player {playerNum}
             </span>
-            <h1 className="text-3xl font-bold text-white mt-4 mb-2">Pick Your Number</h1>
-            <p className="text-gray-500">Choose a secret number between 1 and 100</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-white mt-4 mb-2">Pick Your Number</h1>
+            <p className="text-gray-500 text-sm sm:text-base">Choose a secret number between 1 and 100</p>
           </div>
 
           <form
             onSubmit={handlePickNumber}
-            className="bg-[#12121a] border border-[#1e1e2e] rounded-2xl p-8"
+            className="bg-[#12121a] border border-[#1e1e2e] rounded-2xl p-6 sm:p-8"
           >
             <input
               type="number"
@@ -266,7 +266,7 @@ export default function RoomPage({ params }: { params: Promise<{ roomId: string 
                 setInputError("");
               }}
               placeholder="1 – 100"
-              className="w-full bg-[#0a0a0f] border border-[#1e1e2e] rounded-xl px-4 py-4 text-center text-4xl font-mono font-bold text-white placeholder-gray-700 focus:outline-none focus:border-violet-500 mb-2 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+              className="w-full bg-[#0a0a0f] border border-[#1e1e2e] rounded-xl px-4 py-3 sm:py-4 text-3xl sm:text-4xl font-mono font-bold text-white placeholder-gray-700 focus:outline-none focus:border-violet-500 mb-2 text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
               autoFocus
             />
             {inputError && (
@@ -275,7 +275,7 @@ export default function RoomPage({ params }: { params: Promise<{ roomId: string 
             {!inputError && <div className="mb-4" />}
             <button
               type="submit"
-              className="w-full py-4 bg-violet-600 hover:bg-violet-500 text-white rounded-xl font-semibold text-lg transition-colors"
+              className="w-full py-3 sm:py-4 bg-violet-600 hover:bg-violet-500 text-white rounded-xl font-semibold transition-colors text-base sm:text-lg"
             >
               Lock In
             </button>
@@ -288,21 +288,21 @@ export default function RoomPage({ params }: { params: Promise<{ roomId: string 
   // ─── Waiting for Opponent to Pick ─────────────────────────────────────────
   if (phase === "waiting-pick") {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#0a0a0f]">
+      <div className="min-h-screen flex items-center justify-center bg-[#0a0a0f] px-4">
         <div className="text-center">
-          <div className="text-6xl mb-6">🔒</div>
-          <h2 className="text-2xl font-bold text-white mb-2">Number Locked In!</h2>
-          <p className="text-gray-500 mb-6">
+          <div className="text-5xl sm:text-6xl mb-6">🔒</div>
+          <h2 className="text-xl sm:text-2xl font-bold text-white mb-2">Number Locked In!</h2>
+          <p className="text-gray-500 mb-6 text-sm sm:text-base">
             {opponentPicked ? "Both ready! Starting soon..." : "Waiting for your opponent..."}
           </p>
           {!opponentPicked && (
-            <div className="flex items-center justify-center gap-2 text-gray-600 text-sm">
+            <div className="flex items-center justify-center gap-2 text-gray-600 text-xs sm:text-sm">
               <div className="w-2 h-2 bg-violet-500 rounded-full animate-pulse" />
               Opponent is choosing their number
             </div>
           )}
           {opponentPicked && (
-            <div className="flex items-center justify-center gap-2 text-green-500 text-sm">
+            <div className="flex items-center justify-center gap-2 text-green-500 text-xs sm:text-sm">
               <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
               Both players ready!
             </div>
@@ -319,29 +319,28 @@ export default function RoomPage({ params }: { params: Promise<{ roomId: string 
     return (
       <div className="min-h-screen bg-[#0a0a0f] text-white flex flex-col">
         {/* Header */}
-        <div className="border-b border-[#1e1e2e] px-6 py-4">
-          <div className="max-w-4xl mx-auto flex items-center justify-between">
-            <span className="text-xs font-semibold text-violet-400 uppercase tracking-widest bg-violet-500/10 px-3 py-1 rounded-full">
+        <div className="border-b border-[#1e1e2e] px-4 sm:px-6 py-4">
+          <div className="max-w-4xl mx-auto flex items-center justify-between gap-2">
+            <span className="text-xs font-semibold text-violet-400 uppercase tracking-widest bg-violet-500/10 px-2 sm:px-3 py-1 rounded-full whitespace-nowrap">
               Player {playerNum}
             </span>
-            <span className="text-lg font-black tracking-tight">GUESS</span>
-            <span className="text-sm text-gray-500">
-              Opponent: {opponentGuessCount}{" "}
-              {opponentGuessCount === 1 ? "guess" : "guesses"}
+            <span className="text-lg font-black tracking-tight hidden sm:inline">GUESS</span>
+            <span className="text-xs sm:text-sm text-gray-500 text-right">
+              Opponent: {opponentGuessCount}
             </span>
           </div>
         </div>
 
         {/* Main */}
-        <div className="flex-1 max-w-4xl mx-auto w-full px-6 py-8 flex gap-6">
+        <div className="flex-1 max-w-6xl mx-auto w-full px-4 sm:px-6 py-6 sm:py-8 flex flex-col lg:flex-row gap-6">
           {/* Left: Guess History */}
-          <div className="flex-1 flex flex-col min-h-0">
+          <div className="flex-1 flex flex-col min-h-0 order-2 lg:order-1">
             <p className="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-4">
               Your Guesses ({guesses.length})
             </p>
-            <div className="flex-1 overflow-y-auto space-y-2 pr-1">
+            <div className="flex-1 overflow-y-auto space-y-2 pr-1 max-h-96 lg:max-h-none">
               {guesses.length === 0 ? (
-                <div className="flex items-center justify-center h-32 text-gray-700">
+                <div className="flex items-center justify-center h-32 text-gray-700 text-sm sm:text-base">
                   No guesses yet
                 </div>
               ) : (
@@ -350,15 +349,15 @@ export default function RoomPage({ params }: { params: Promise<{ roomId: string 
                   return (
                     <div
                       key={i}
-                      className="flex items-center justify-between bg-[#12121a] border border-[#1e1e2e] rounded-xl px-4 py-3"
+                      className="flex items-center justify-between bg-[#12121a] border border-[#1e1e2e] rounded-xl px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base"
                     >
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-2 sm:gap-3">
                         <span className="w-6 h-6 flex items-center justify-center bg-[#0a0a0f] rounded-lg text-xs text-gray-600 font-mono">
                           {i + 1}
                         </span>
-                        <span className="text-2xl font-mono font-bold">{g.value}</span>
+                        <span className="text-xl sm:text-2xl font-mono font-bold">{g.value}</span>
                       </div>
-                      <span className={`text-sm font-semibold ${meta.color}`}>
+                      <span className={`text-xs sm:text-sm font-semibold ${meta.color}`}>
                         {meta.icon} {meta.label}
                       </span>
                     </div>
@@ -370,15 +369,15 @@ export default function RoomPage({ params }: { params: Promise<{ roomId: string 
           </div>
 
           {/* Right: Input */}
-          <div className="w-64 flex flex-col justify-start pt-8">
-            <div className="bg-[#12121a] border border-[#1e1e2e] rounded-2xl p-6">
+          <div className="w-full lg:w-80 flex flex-col justify-start lg:pt-8 order-1 lg:order-2">
+            <div className="bg-[#12121a] border border-[#1e1e2e] rounded-2xl p-4 sm:p-6">
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-4 text-center">
                 Guess Their Number
               </p>
 
               {lastGuess && (
                 <div
-                  className={`mb-4 p-3 rounded-xl text-center border ${
+                  className={`mb-4 p-3 rounded-xl text-center border text-sm ${
                     lastGuess.result === "too-low"
                       ? "bg-blue-500/10 border-blue-500/20"
                       : lastGuess.result === "too-high"
@@ -386,7 +385,7 @@ export default function RoomPage({ params }: { params: Promise<{ roomId: string 
                       : "bg-green-500/10 border-green-500/20"
                   }`}
                 >
-                  <span className={`text-sm font-semibold ${resultMeta(lastGuess.result).color}`}>
+                  <span className={`text-xs sm:text-sm font-semibold ${resultMeta(lastGuess.result).color}`}>
                     {resultMeta(lastGuess.result).icon} {resultMeta(lastGuess.result).label}
                   </span>
                 </div>
@@ -400,13 +399,13 @@ export default function RoomPage({ params }: { params: Promise<{ roomId: string 
                   value={guessInput}
                   onChange={(e) => setGuessInput(e.target.value)}
                   placeholder="1–100"
-                  className="w-full bg-[#0a0a0f] border border-[#1e1e2e] rounded-xl px-4 py-4 text-center text-3xl font-mono font-bold text-white placeholder-gray-700 focus:outline-none focus:border-violet-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                  className="w-full bg-[#0a0a0f] border border-[#1e1e2e] rounded-xl px-4 py-3 sm:py-4 text-2xl sm:text-3xl font-mono font-bold text-white placeholder-gray-700 focus:outline-none focus:border-violet-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                   autoFocus
                 />
                 <button
                   type="submit"
                   disabled={!guessInput}
-                  className="w-full py-3 bg-violet-600 hover:bg-violet-500 disabled:bg-gray-800 disabled:text-gray-600 disabled:cursor-not-allowed text-white rounded-xl font-semibold transition-colors"
+                  className="w-full py-3 bg-violet-600 hover:bg-violet-500 disabled:bg-gray-800 disabled:text-gray-600 disabled:cursor-not-allowed text-white rounded-xl font-semibold transition-colors text-base sm:text-lg"
                 >
                   Guess
                 </button>
@@ -417,14 +416,14 @@ export default function RoomPage({ params }: { params: Promise<{ roomId: string 
 
         {/* Disconnected overlay */}
         {opponentDisconnected && (
-          <div className="fixed inset-0 bg-black/70 flex items-center justify-center">
-            <div className="bg-[#12121a] border border-[#1e1e2e] rounded-2xl p-8 text-center max-w-sm mx-4">
+          <div className="fixed inset-0 bg-black/70 flex items-center justify-center px-4">
+            <div className="bg-[#12121a] border border-[#1e1e2e] rounded-2xl p-6 sm:p-8 text-center max-w-sm w-full">
               <div className="text-4xl mb-4">🔌</div>
               <p className="text-xl font-bold mb-2">Opponent Disconnected</p>
-              <p className="text-gray-500 mb-6">Your opponent has left the game.</p>
+              <p className="text-gray-500 mb-6 text-sm">Your opponent has left the game.</p>
               <button
                 onClick={() => router.push("/")}
-                className="w-full py-3 bg-violet-600 hover:bg-violet-500 text-white rounded-xl font-semibold transition-colors"
+                className="w-full py-3 bg-violet-600 hover:bg-violet-500 text-white rounded-xl font-semibold transition-colors text-base sm:text-lg"
               >
                 Back to Home
               </button>
@@ -438,26 +437,26 @@ export default function RoomPage({ params }: { params: Promise<{ roomId: string 
   // ─── Game Over ─────────────────────────────────────────────────────────────
   if (phase === "game-over") {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#0a0a0f] px-4">
+      <div className="min-h-screen flex items-center justify-center bg-[#0a0a0f] px-4 py-8">
         <div className="max-w-md w-full text-center">
-          <div className="text-8xl mb-4">{isWinner ? "🏆" : "💀"}</div>
+          <div className="text-6xl sm:text-8xl mb-4">{isWinner ? "🏆" : "💀"}</div>
           <h1
-            className={`text-5xl font-black mb-2 ${isWinner ? "text-yellow-400" : "text-red-400"}`}
+            className={`text-4xl sm:text-5xl font-black mb-2 ${isWinner ? "text-yellow-400" : "text-red-400"}`}
           >
             {isWinner ? "You Win!" : "You Lose"}
           </h1>
-          <p className="text-gray-400 mb-1">
+          <p className="text-gray-400 mb-1 text-sm sm:text-base">
             {isWinner
               ? `Guessed in ${guesses.length} ${guesses.length === 1 ? "try" : "tries"}`
               : "Your opponent guessed first"}
           </p>
-          <p className="text-gray-600 text-sm mb-8">
+          <p className="text-gray-600 text-xs sm:text-sm mb-8">
             Opponent made {opponentGuessCount}{" "}
             {opponentGuessCount === 1 ? "guess" : "guesses"}
           </p>
 
           {guesses.length > 0 && (
-            <div className="bg-[#12121a] border border-[#1e1e2e] rounded-2xl p-6 mb-6 text-left">
+            <div className="bg-[#12121a] border border-[#1e1e2e] rounded-2xl p-4 sm:p-6 mb-6 text-left">
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-4">
                 Your Guesses
               </p>
@@ -465,7 +464,7 @@ export default function RoomPage({ params }: { params: Promise<{ roomId: string 
                 {guesses.map((g, i) => {
                   const meta = resultMeta(g.result);
                   return (
-                    <div key={i} className="flex items-center justify-between text-sm">
+                    <div key={i} className="flex items-center justify-between text-xs sm:text-sm">
                       <span className="text-gray-600 w-6">#{i + 1}</span>
                       <span className="font-mono font-bold text-lg">{g.value}</span>
                       <span className={`${meta.color} font-semibold`}>
@@ -481,13 +480,13 @@ export default function RoomPage({ params }: { params: Promise<{ roomId: string 
           <div className="space-y-3">
             <button
               onClick={handlePlayAgain}
-              className="w-full py-4 bg-violet-600 hover:bg-violet-500 text-white rounded-xl font-semibold text-lg transition-colors"
+              className="w-full py-3 sm:py-4 bg-violet-600 hover:bg-violet-500 text-white rounded-xl font-semibold text-base sm:text-lg transition-colors"
             >
               {opponentReadyForNext ? "Starting Next Round..." : "Play Again"}
             </button>
             <button
               onClick={() => router.push("/")}
-              className="w-full py-4 bg-[#12121a] border border-[#1e1e2e] hover:border-violet-500/50 text-gray-300 rounded-xl font-semibold text-lg transition-all"
+              className="w-full py-3 sm:py-4 bg-[#12121a] border border-[#1e1e2e] hover:border-violet-500/50 text-gray-300 rounded-xl font-semibold text-base sm:text-lg transition-all"
             >
               Back to Home
             </button>
