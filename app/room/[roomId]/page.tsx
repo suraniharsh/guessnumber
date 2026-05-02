@@ -42,6 +42,8 @@ export default function RoomPage({ params }: { params: Promise<{ roomId: string 
   const [copied, setCopied] = useState(false);
   const [opponentPicked, setOpponentPicked] = useState(false);
   const [inputError, setInputError] = useState("");
+  const [round, setRound] = useState(1);
+  const [opponentReadyForNext, setOpponentReadyForNext] = useState(false);
 
   const playerNumRef = useRef<1 | 2 | null>(null);
   const guessesEndRef = useRef<HTMLDivElement>(null);
@@ -99,9 +101,25 @@ export default function RoomPage({ params }: { params: Promise<{ roomId: string 
       setOpponentGuessCount((prev) => prev + 1);
     });
 
-    socket.on("game-over", ({ winnerNum }: { winnerNum: 1 | 2 }) => {
+    socket.on("game-over", ({ winnerNum, round: gameRound }: { winnerNum: 1 | 2; round: number }) => {
       setIsWinner(playerNumRef.current === winnerNum);
+      setRound(gameRound);
       setPhase("game-over");
+    });
+
+    socket.on("next-round-starting", ({ round: nextRound }: { round: number }) => {
+      setRound(nextRound);
+      setGuesses([]);
+      setOpponentGuessCount(0);
+      setSecretInput("");
+      setGuessInput("");
+      setOpponentPicked(false);
+      setOpponentReadyForNext(false);
+      setPhase("pick-number");
+    });
+
+    socket.on("player-ready-for-next", () => {
+      setOpponentReadyForNext(true);
     });
 
     socket.on("player-disconnected", () => {
@@ -121,6 +139,8 @@ export default function RoomPage({ params }: { params: Promise<{ roomId: string 
       socket.off("guess-result");
       socket.off("opponent-guessed");
       socket.off("game-over");
+      socket.off("next-round-starting");
+      socket.off("player-ready-for-next");
       socket.off("player-disconnected");
       socket.off("game-error");
     };
@@ -150,6 +170,10 @@ export default function RoomPage({ params }: { params: Promise<{ roomId: string 
     navigator.clipboard.writeText(displayRoomId);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  }
+
+  function handlePlayAgain() {
+    getSocket().emit("play-again");
   }
 
   // ─── Connecting ────────────────────────────────────────────────────────────
@@ -454,12 +478,20 @@ export default function RoomPage({ params }: { params: Promise<{ roomId: string 
             </div>
           )}
 
-          <button
-            onClick={() => router.push("/")}
-            className="w-full py-4 bg-violet-600 hover:bg-violet-500 text-white rounded-xl font-semibold text-lg transition-colors"
-          >
-            Play Again
-          </button>
+          <div className="space-y-3">
+            <button
+              onClick={handlePlayAgain}
+              className="w-full py-4 bg-violet-600 hover:bg-violet-500 text-white rounded-xl font-semibold text-lg transition-colors"
+            >
+              {opponentReadyForNext ? "Starting Next Round..." : "Play Again"}
+            </button>
+            <button
+              onClick={() => router.push("/")}
+              className="w-full py-4 bg-[#12121a] border border-[#1e1e2e] hover:border-violet-500/50 text-gray-300 rounded-xl font-semibold text-lg transition-all"
+            >
+              Back to Home
+            </button>
+          </div>
         </div>
       </div>
     );

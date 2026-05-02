@@ -21,6 +21,7 @@ interface Room {
   players: Player[];
   status: "waiting" | "picking" | "playing" | "finished";
   createdAt: number;
+  round: number;
 }
 
 const rooms = new Map<string, Room>();
@@ -53,6 +54,7 @@ io.on("connection", (socket) => {
       players: [{ socketId: socket.id, playerNum: 1, secretNumber: null, ready: false }],
       status: "waiting",
       createdAt: Date.now(),
+      round: 1,
     };
     rooms.set(roomId, room);
     socket.join(roomId);
@@ -135,7 +137,30 @@ io.on("connection", (socket) => {
 
     if (result === "correct") {
       room.status = "finished";
-      io.to(roomId).emit("game-over", { winnerNum: player.playerNum });
+      io.to(roomId).emit("game-over", { winnerNum: player.playerNum, round: room.round });
+    }
+  });
+
+  socket.on("play-again", () => {
+    const entry = findPlayerRoom(socket.id);
+    if (!entry) return;
+
+    const [roomId, room] = entry;
+    if (room.status !== "finished") return;
+
+    const player = room.players.find((p) => p.socketId === socket.id);
+    if (!player) return;
+
+    player.secretNumber = null;
+    player.ready = false;
+
+    const opponent = room.players.find((p) => p.socketId !== socket.id);
+    if (opponent && opponent.ready) {
+      room.status = "picking";
+      room.round++;
+      io.to(roomId).emit("next-round-starting", { round: room.round });
+    } else {
+      io.to(roomId).emit("player-ready-for-next");
     }
   });
 
